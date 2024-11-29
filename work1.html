@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MCT Mock Tests</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .question-card h6 {
+            font-weight: 600;
+        }
+
+        .container {
+            display: table;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #startScreen, #resultScreen {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        #quizScreen {
+            margin-top: 50px;
+        }
+
+        .question-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px #0000001a;
+        }
+
+        .btn-custom, .btn-custom-lg {
+            background-color: #14AFA9 !important;
+            border: transparent;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 0.5em;
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .form-check {
+            background-color: #fafafa;
+            padding: 1em 2.5em;
+            border-radius: 0.5em;
+        }
+
+        .progress-bar {
+            background-color: #14AFA9 !important;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .logo {
+            color: #14AFA9;
+            font-weight: 600;
+        }
+
+        .time-counter {
+            font-size: 20px;
+            font-weight: bold;
+            color: #14AFA9;
+            border-radius: 10px;
+        }
+
+        input[type="radio"]:checked {
+            background-color: #14AFA9 !important;
+            border-color: #14AFA9 !important;
+        }
+
+        input[type="radio"]:not(:checked) {
+            border-color: #14AFA9 !important;
+        }
+
+        input[type="radio"]:focus {
+            border-color: #14AFA9
+        }
+
+        .btn-secondary, .btn-secondary:hover {
+            border: 2px solid #14AFA9;
+            color: #14AFA9;
+            background-color: #fff !important;
+        }
+
+        .year-subject {
+            color: #14AFA9;
+        }
+
+        @media (max-width: 768px) {
+            .btn-container {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-custom {
+                width: 100%;
+                margin-bottom: -5px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="startScreen" class="text-center">
+            <h3>ยินดีต้อนรับสู่แบบทดสอบ</h3>
+            <h5>ข้อสอบ PAT 5</h5>
+            <p class="year-subject">ปี 2554 วิชา PAT 5</p>
+            <p>ระดับชั้น ม.6 จำนวน 20 ข้อ เวลา 30 นาที</p>
+            <button class="btn btn-primary btn-custom-lg" id="btnStart">เริ่มทำแบบทดสอบ</button>
+        </div>
+
+        <div id="quizScreen" style="display: none;">
+            <div id="questionContainer" class="question-card">
+                <div class="mb-4">
+                    <h4 class="logo">MCT Mock Tests</h4>
+                    <div class="d-flex justify-content-between">
+                        <p>ข้อสอบ PAT 5 ปี 2554 จำนวน 20 ข้อ</p>
+                        <div id="timeCounter" class="time-counter">00:00</div>
+                    </div>
+                    <div class="progress" style="height: 20px;">
+                        <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                </div>
+                <h6 id="questionTitle">คำถามที่</h6>
+                <p id="questionText">คำถาม</p>
+                <form id="questionOptions"></form>
+                <div class="btn-container d-flex justify-content-between">
+                    <button class="btn btn-secondary btn-custom" id="btnPrev" style="display: none;">ย้อนกลับ</button>
+                    <button class="btn btn-primary btn-custom" id="btnNext">ถัดไป</button>
+                    <button class="btn btn-success btn-custom" id="btnSubmit" style="display: none;">ส่งคำตอบ</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultScreen" style="display: none;" class="result-screen">
+            <h3>ผลคะแนนของคุณ</h3>
+            <p id="resultText"></p>
+            <button class="btn btn-primary btn-custom-lg" id="btnRestart">ทำแบบทดสอบใหม่</button>
+        </div>
+    </div>
+
+    <script>
+        let quizlist = [];
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timer;
+        let timeRemaining = 600; // 10 minutes in seconds
+
+        // โหลดข้อมูลจาก quiz.json
+        fetch('quiz.json')
+            .then(response => response.json())
+            .then(data => {
+                quizlist = data;
+                // เมื่อโหลดข้อมูลเสร็จแล้วก็เริ่มการทดสอบ
+                $("#btnStart").click(function () {
+                    $("#startScreen").hide();
+                    $("#quizScreen").show();
+                    loadQuestion();
+                    startTimer();
+                });
+            })
+            .catch(error => {
+                console.error('Error loading quiz data:', error);
+            });
+
+        // จับเวลา
+        function startTimer() {
+            timer = setInterval(function () {
+                timeRemaining--;
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
+                $("#timeCounter").text(`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`);
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    alert("หมดเวลา!");
+                    showResult();
+                }
+            }, 1000);
+        }
+
+        // ถัดไป
+        $("#btnNext").click(function () {
+            let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
+            if (selectedOption === undefined) {
+                alert("กรุณาเลือกคำตอบก่อนดำเนินการต่อ");
+                return;
+            }
+            userAnswers[currentQuestion] = parseInt(selectedOption);
+            if (currentQuestion < quizlist.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            }
+        });
+
+        // ย้อนกลับ
+        $("#btnPrev").click(function () {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        });
+
+        // ส่งคำตอบ
+        $("#btnSubmit").click(function () {
+            let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
+            if (selectedOption === undefined) {
+                alert("กรุณาเลือกคำตอบก่อนดำเนินการต่อ");
+                return;
+            }
+            userAnswers[currentQuestion] = parseInt(selectedOption);
+            showResult();
+        });
+
+        // ทำแบบทดสอบใหม่
+        $("#btnRestart").click(function () {
+            location.reload();
+        });
+
+        // โหลดคำถามจาก quizlist
+        function loadQuestion() {
+            const question = quizlist[currentQuestion];
+            const progressPercentage = ((currentQuestion + 1) / quizlist.length) * 100;
+
+            // อัปเดต Progress Bar
+            $("#progressBar").css("width", `${progressPercentage}%`);
+            $("#progressBar").attr("aria-valuenow", progressPercentage.toFixed(0));
+            $("#progressBar").text(`${progressPercentage.toFixed(0)}%`);
+
+            $("#questionTitle").text(`คำถามที่ ${currentQuestion + 1}`);
+            $("#questionText").text(`${question.title}`);
+            $("#questionOptions").html("");
+
+            question.options.forEach(function (option, index) {
+                $("#questionOptions").append(`
+                <div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="question${currentQuestion}" id="option${currentQuestion}_${index}" value="${index}">
+                        <label class="form-check-label" for="option${currentQuestion}_${index}">${option}</label>
+                    </div>
+                </div>
+                `);
+            });
+
+            // แสดงปุ่ม
+            $("#btnPrev").toggle(currentQuestion > 0);
+            $("#btnNext").toggle(currentQuestion < quizlist.length - 1);
+            $("#btnSubmit").toggle(currentQuestion === quizlist.length - 1);
+        }
+
+        // แสดงผลลัพธ์
+        function showResult() {
+            let correctAnswers = 0;
+            quizlist.forEach(function (question, index) {
+                if (userAnswers[index] !== undefined && userAnswers[index] === question.answer) {
+                    correctAnswers++;
+                }
+            });
+            const percentage = (correctAnswers / quizlist.length) * 100;
+            $("#quizScreen").hide();
+            $("#resultScreen").show();
+            $("#resultText").text(`คุณตอบถูก ${correctAnswers} ข้อ จากทั้งหมด ${quizlist.length} ข้อ (${percentage.toFixed(2)}%)`);
+        }
+    </script>
+
+</body>
+
+</html>
