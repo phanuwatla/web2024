@@ -144,7 +144,7 @@
                 <form id="questionOptions"></form>
                 <div class="btn-container d-flex justify-content-between">
                     <button class="btn btn-secondary btn-custom" id="btnPrev" style="display: none;">ย้อนกลับ</button>
-                    <button class="btn btn-primary btn-custom" id="btnNext">ถัดไป</button>
+                    <button class="btn btn-primary btn-custom" id="btnNext">ข้อถัดไป</button>
                     <button class="btn btn-success btn-custom" id="btnSubmit" style="display: none;">ส่งคำตอบ</button>
                 </div>
             </div>
@@ -162,14 +162,12 @@
         let currentQuestion = 0;
         let userAnswers = [];
         let timer;
-        let timeRemaining = 600; // 10 minutes in seconds
+        let timeRemaining = 1800;
 
-        // โหลดข้อมูลจาก quiz.json
         fetch('quiz.json')
             .then(response => response.json())
             .then(data => {
                 quizlist = data;
-                // เมื่อโหลดข้อมูลเสร็จแล้วก็เริ่มการทดสอบ
                 $("#btnStart").click(function () {
                     $("#startScreen").hide();
                     $("#quizScreen").show();
@@ -181,7 +179,6 @@
                 console.error('Error loading quiz data:', error);
             });
 
-        // จับเวลา
         function startTimer() {
             timer = setInterval(function () {
                 timeRemaining--;
@@ -197,7 +194,6 @@
             }, 1000);
         }
 
-        // ถัดไป
         $("#btnNext").click(function () {
             let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
             if (selectedOption === undefined) {
@@ -211,7 +207,6 @@
             }
         });
 
-        // ย้อนกลับ
         $("#btnPrev").click(function () {
             if (currentQuestion > 0) {
                 currentQuestion--;
@@ -219,7 +214,6 @@
             }
         });
 
-        // ส่งคำตอบ
         $("#btnSubmit").click(function () {
             let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
             if (selectedOption === undefined) {
@@ -230,17 +224,14 @@
             showResult();
         });
 
-        // ทำแบบทดสอบใหม่
         $("#btnRestart").click(function () {
             location.reload();
         });
 
-        // โหลดคำถามจาก quizlist
         function loadQuestion() {
             const question = quizlist[currentQuestion];
             const progressPercentage = ((currentQuestion + 1) / quizlist.length) * 100;
 
-            // อัปเดต Progress Bar
             $("#progressBar").css("width", `${progressPercentage}%`);
             $("#progressBar").attr("aria-valuenow", progressPercentage.toFixed(0));
             $("#progressBar").text(`${progressPercentage.toFixed(0)}%`);
@@ -260,13 +251,11 @@
                 `);
             });
 
-            // แสดงปุ่ม
             $("#btnPrev").toggle(currentQuestion > 0);
             $("#btnNext").toggle(currentQuestion < quizlist.length - 1);
             $("#btnSubmit").toggle(currentQuestion === quizlist.length - 1);
         }
 
-        // แสดงผลลัพธ์
         function showResult() {
             let correctAnswers = 0;
             quizlist.forEach(function (question, index) {
