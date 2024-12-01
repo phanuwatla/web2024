@@ -26,7 +26,9 @@
             height: 100vh;
         }
 
-        #startScreen, #resultScreen {
+        #startScreen,
+        #resultScreen,
+        #answersScreen {
             display: table-cell;
             vertical-align: middle;
             text-align: center;
@@ -36,6 +38,11 @@
             margin-top: 50px;
         }
 
+        #answersScreen {
+            padding-top: 50px;
+            padding-bottom: 60px;
+        }
+
         .question-card {
             background: #fff;
             padding: 20px;
@@ -43,16 +50,14 @@
             box-shadow: 0 2px 4px #0000001a;
         }
 
-        .btn-custom, .btn-custom-lg {
+        .btn-custom,
+        .btn-custom-lg,
+        .btn-custom-sd {
             background-color: #14AFA9 !important;
             border: transparent;
             padding: 10px 20px;
             margin-top: 20px;
             border-radius: 0.5em;
-        }
-
-        .result-screen {
-            text-align: center;
         }
 
         .form-check {
@@ -92,8 +97,9 @@
             border-color: #14AFA9
         }
 
-        .btn-secondary, .btn-secondary:hover {
-            border: 1px solid #14AFA9;
+        .btn-secondary,
+        .btn-secondary:hover {
+            border: 0.1em solid #14AFA9;
             color: #14AFA9;
             background-color: #fff !important;
         }
@@ -102,17 +108,50 @@
             color: #14AFA9;
         }
 
+        .answer-container,
+        .correct-answer-container,
+        .incorrect-answer-container {
+            background-color: #fafafa;
+            padding: 1em;
+            border-radius: 0.5em;
+        }
+
+        .incorrect-answer-container {
+            background-color: #af141425;
+            border: 0.1em solid #af1414;
+        }
+
+        .correct-answer-container {
+            background-color: #14afaa25;
+            border: 0.1em solid #14AFA9;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .answer-item {
+            text-align: left;
+            margin-bottom: 1.2em;
+        }
+
+        .answer-item:first-child {
+            margin-top: 2em;
+        }
+
         @media (max-width: 768px) {
             .btn-container {
                 flex-direction: column-reverse;
                 width: 100%;
             }
+
             .btn-custom {
                 width: 100%;
                 margin-bottom: -5px;
             }
         }
-
     </style>
 </head>
 
@@ -136,7 +175,8 @@
                         <div id="timeCounter" class="time-counter">00:00</div>
                     </div>
                     <div class="progress" style="height: 20px;">
-                        <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                        <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                     </div>
                 </div>
                 <h6 id="questionTitle">คำถามที่</h6>
@@ -153,7 +193,19 @@
         <div id="resultScreen" style="display: none;" class="result-screen">
             <h3>ผลคะแนนของคุณ</h3>
             <p id="resultText"></p>
-            <button class="btn btn-primary btn-custom-lg" id="btnRestart">ทำแบบทดสอบใหม่</button>
+            <div>
+                <button class="btn btn-primary btn-custom-lg" id="btnRestart">ทำแบบทดสอบใหม่</button>
+                <button class="btn btn-secondary btn-custom-sd" id="btnShowAnswers">ดูเฉลย</button>
+            </div>
+        </div>
+
+        <div id="answersScreen" style="display: none;" class="result-screen">
+            <h3>เฉลยคำถาม</h3>
+            <h5>ข้อสอบ PAT 5</h5>
+            <p class="year-subject">ปี 2554 วิชา PAT 5</p>
+            <p>ระดับชั้น ม.6 จำนวน 20 ข้อ เวลา 30 นาที</p>
+            <div id="answersList"></div>
+            <button class="btn btn-primary btn-custom-lg" id="btnBackToResult">กลับไปที่ผลคะแนน</button>
         </div>
     </div>
 
@@ -195,12 +247,7 @@
         }
 
         $("#btnNext").click(function () {
-            let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
-            if (selectedOption === undefined) {
-                alert("กรุณาเลือกคำตอบก่อนดำเนินการต่อ");
-                return;
-            }
-            userAnswers[currentQuestion] = parseInt(selectedOption);
+            userAnswers[currentQuestion] = $("input[name='question" + currentQuestion + "']:checked").val() || null;
             if (currentQuestion < quizlist.length - 1) {
                 currentQuestion++;
                 loadQuestion();
@@ -215,13 +262,16 @@
         });
 
         $("#btnSubmit").click(function () {
-            let selectedOption = $("input[name='question" + currentQuestion + "']:checked").val();
-            if (selectedOption === undefined) {
-                alert("กรุณาเลือกคำตอบก่อนดำเนินการต่อ");
-                return;
-            }
-            userAnswers[currentQuestion] = parseInt(selectedOption);
+            userAnswers[currentQuestion] = $("input[name='question" + currentQuestion + "']:checked").val() || null;
+            if (userAnswers.includes(null)) {
+                let unansweredQuestions = [];
+                userAnswers.forEach((answer, index) => {
+                    if (answer === null) unansweredQuestions.push(index + 1);
+                });
+                alert("กรุณาตอบคำถามให้ครบทุกข้อ\nข้อที่เหลือ: " + unansweredQuestions.join(", "));
+            } else {
             showResult();
+            }
         });
 
         $("#btnRestart").click(function () {
@@ -230,7 +280,8 @@
 
         function loadQuestion() {
             const question = quizlist[currentQuestion];
-            const progressPercentage = ((currentQuestion + 1) / quizlist.length) * 100;
+            const answeredQuestions = userAnswers.filter(answer => answer !== null).length;
+            const progressPercentage = (answeredQuestions / quizlist.length) * 100;
 
             $("#progressBar").css("width", `${progressPercentage}%`);
             $("#progressBar").attr("aria-valuenow", progressPercentage.toFixed(0));
@@ -242,13 +293,13 @@
 
             question.options.forEach(function (option, index) {
                 $("#questionOptions").append(`
-                <div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="question${currentQuestion}" id="option${currentQuestion}_${index}" value="${index}">
-                        <label class="form-check-label" for="option${currentQuestion}_${index}">${option}</label>
-                    </div>
+            <div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="question${currentQuestion}" id="option${currentQuestion}_${index}" value="${index}" ${userAnswers[currentQuestion] == index ? 'checked' : ''}>
+                    <label class="form-check-label" for="option${currentQuestion}_${index}">${option}</label>
                 </div>
-                `);
+            </div>
+        `);
             });
 
             $("#btnPrev").toggle(currentQuestion > 0);
@@ -258,16 +309,47 @@
 
         function showResult() {
             let correctAnswers = 0;
+
             quizlist.forEach(function (question, index) {
-                if (userAnswers[index] !== undefined && userAnswers[index] === question.answer) {
+                if (userAnswers[index] !== undefined && userAnswers[index] == question.answer) {
                     correctAnswers++;
                 }
             });
+
             const percentage = (correctAnswers / quizlist.length) * 100;
+
             $("#quizScreen").hide();
             $("#resultScreen").show();
+
             $("#resultText").text(`คุณตอบถูก ${correctAnswers} ข้อ จากทั้งหมด ${quizlist.length} ข้อ (${percentage.toFixed(2)}%)`);
         }
+
+        $("#btnShowAnswers").click(function () {
+            let answersText = "<ul>";
+            quizlist.forEach(function (question, index) {
+                const userAnswer = userAnswers[index] !== undefined ? question.options[userAnswers[index]] : "ไม่ได้ตอบ";
+                const correctAnswer = question.options[question.answer];
+                answersText += `
+            <li class="answer-item">
+                <div id="questionContainer" class="question-card">
+                    <h6 id="questionTitle">คำถามที่ ${index + 1}</h6>
+                    <p id="questionText">${question.title}</p>
+                    <p class="answer-container"><strong>คุณตอบ:</strong> ${userAnswer}</p> 
+                    <p class="correct-answer-container"><strong>คำตอบที่ถูกต้อง:</strong> ${correctAnswer}</p>
+                </div>
+            </li>`;
+            });
+            answersText += "</ul>";
+            $("#answersList").html(answersText);
+            $("#resultScreen").hide();
+            $("#answersScreen").show();
+        });
+
+        $("#btnBackToResult").click(function () {
+            $("#answersScreen").hide();
+            $("#resultScreen").show();
+        });
+
     </script>
 
 </body>
