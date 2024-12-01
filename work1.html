@@ -109,16 +109,10 @@
         }
 
         .answer-container,
-        .correct-answer-container,
-        .incorrect-answer-container {
+        .correct-answer-container {
             background-color: #fafafa;
             padding: 1em;
             border-radius: 0.5em;
-        }
-
-        .incorrect-answer-container {
-            background-color: #af141425;
-            border: 0.1em solid #af1414;
         }
 
         .correct-answer-container {
@@ -329,22 +323,34 @@
             quizlist.forEach(function (question, index) {
                 const userAnswer = userAnswers[index] !== undefined ? question.options[userAnswers[index]] : "ไม่ได้ตอบ";
                 const correctAnswer = question.options[question.answer];
-                answersText += `
-            <li class="answer-item">
-                <div id="questionContainer" class="question-card">
-                    <h6 id="questionTitle">คำถามที่ ${index + 1}</h6>
-                    <p id="questionText">${question.title}</p>
-                    <p class="answer-container"><strong>คุณตอบ:</strong> ${userAnswer}</p> 
-                    <p class="correct-answer-container"><strong>คำตอบที่ถูกต้อง:</strong> ${correctAnswer}</p>
-                </div>
-            </li>`;
+        
+                if (userAnswers[index] == question.answer) {
+                    answersText += `
+                        <li class="answer-item">
+                            <div id="questionContainer" class="question-card">
+                                <h6 id="questionTitle">คำถามที่ ${index + 1}</h6>
+                                <p id="questionText">${question.title}</p>
+                                <p class="correct-answer-container"><strong>คุณตอบถูก:</strong> ${correctAnswer}</p>
+                            </div>
+                        </li>`;
+                } else {
+                    answersText += `
+                        <li class="answer-item">
+                            <div id="questionContainer" class="question-card">
+                                <h6 id="questionTitle">คำถามที่ ${index + 1}</h6>
+                                <p id="questionText">${question.title}</p>
+                                <p class="answer-container"><strong>คุณตอบ:</strong> ${userAnswer}</p>
+                                <p class="correct-answer-container"><strong>คำตอบที่ถูกต้อง:</strong> ${correctAnswer}</p>
+                            </div>
+                        </li>`;
+                }
             });
             answersText += "</ul>";
             $("#answersList").html(answersText);
             $("#resultScreen").hide();
             $("#answersScreen").show();
         });
-
+        
         $("#btnBackToResult").click(function () {
             $("#answersScreen").hide();
             $("#resultScreen").show();
