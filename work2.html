@@ -266,7 +266,7 @@
                 const questions = ref([]);
                 const userAnswers = ref([]);
                 const timer = ref(null);
-                const timeRemaining = ref(1);
+                const timeRemaining = ref(1800);
 
                 const timeDisplay = computed(() => {
                     const minutes = String(Math.floor(timeRemaining.value / 60)).padStart(2, '0');
