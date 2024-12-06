@@ -198,7 +198,7 @@
                         </v-btn>
                     </v-row>
                     <div v-if="questions[currentQuestion]?.paragraph" >
-                        <p v-html="`\"${questions[currentQuestion]?.paragraph}\"` || 'ไม่มีคำถาม'" class="mb-3 paragraph"></p>                   
+                        <p v-html="questions[currentQuestion]?.paragraph || 'ไม่มีคำถาม'" class="mb-3 paragraph"></p>                   
                     </div>
                     <div v-if="questions[currentQuestion]?.image"  class="image-container mb-3">
                         <img :src="questions[currentQuestion].image">
