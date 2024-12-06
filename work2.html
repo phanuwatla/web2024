@@ -19,21 +19,32 @@
         .time-counter {
             font-size: 20px;
             font-weight: bold;
-            color: #14AFA9;
+            color: #894eff ;
         }
 
         .btn-custom,
         .btn-custom-lg,
         .btn-custom-sd {
-            background-color: #14AFA9 !important;
+            background-color: #894eff !important;
             border: transparent;
             margin-bottom: 1em;
             border-radius: 0.5em;
             color: #fff;
         }
 
+        .btn-secondary {
+            border-radius: 0.5em;
+        }
+
+        .start-screen, #resultScreen {
+            background-image: url('/img/w2bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
         .logo {
-            color: #14AFA9;
+            color: #894eff;
         }
 
         .v-selection-control__input input {
@@ -58,18 +69,18 @@
 
         .v-selection-control__input input[type="radio"]:checked {
             border-style: solid;
-            background-color: #14AFA9 !important;
-            border-color: #14AFA9 !important;
+            background-color: #894eff !important;
+            border-color: #894eff  !important;
         }
 
         .v-selection-control__input input[type="radio"]:not(:checked) {
             border-style: solid;
-            border-color: #14AFA9 !important;
+            border-color: #894eff  !important;
         }
 
         .v-selection-control__input input[type="radio"]:focus {
             border-style: solid;
-            border-color: #14AFA9
+            border-color: #894eff 
         }
 
         .v-selection-control {
@@ -90,28 +101,28 @@
         .btn-question {
             background-color: #fff;
             color: #000;
-            border: 0.1em solid #14AFA9;
+            border: 0.1em solid #894eff ;
             border-radius: 0.5em;
             min-width: 2.5em;
         }
 
         .btn-question:hover {
-            background-color: #14AFA9;
+            background-color: #894eff;
             color: #fff;
         }
 
         .btn-answered {
-            background-color: #14AFA9;
+            background-color: #894eff ;
             color: #fff;
         }
 
         .fa-file {
-            color: #14AFA9;
+            color: #894eff;
             font-size: 2.8em;
         }
 
         .year-subject {
-            color: #14AFA9;
+            color: #894eff;
         }
 
         .paragraph {
@@ -121,7 +132,8 @@
         }
 
         .paragraph::selection {
-            background-color: #ffe536;
+            background-color: #ff69fc;
+            color: #fff;
         }
 
         .image-container {
@@ -129,6 +141,13 @@
             justify-content: start;
             align-items: start;
             height: fit-content;
+        }
+
+        .start-con, .result-con {
+            background-color: #fff;
+            width: fit-content;
+            border-radius: 0.8em;
+            padding: 2em;
         }
 
         img {
@@ -171,8 +190,8 @@
 <body>
     <div id="app">
         <v-app>
-            <div v-if="screen === 'start'" class="text-center">
-                <v-container>
+            <div v-if="screen === 'start'" class="text-center h-screen align-content-center start-screen">
+                <v-container class="start-con">
                     <v-icon class="mb-5">fa-regular fa-file</v-icon>
                     <h2>ยินดีต้อนรับสู่แบบทดสอบ</h2>
                     <h3 class="mb-3">ข้อสอบ TGAT2</h3>
@@ -215,6 +234,7 @@
                     </v-card>
 
                     <v-row justify="space-between" class="btn-container mt-5 ml-0 mr-0">
+                        <v-btn class="btn-secondary" @click="restartQuiz" v-if="currentQuestion === 0">กลับหน้าหลัก</v-btn>
                         <v-btn class="btn-secondary" @click="prevQuestion" v-if="currentQuestion > 0">ย้อนกลับ</v-btn>
                         <v-btn class="btn-custom" @click="nextQuestion"
                             v-if="currentQuestion < questions.length - 1">ข้อถัดไป</v-btn>
@@ -224,8 +244,8 @@
                 </v-container>
             </div>
 
-            <div v-else-if="screen === 'result'" class="text-center" id="resultScreen">
-                <v-container>
+            <div v-else-if="screen === 'result'" class="text-center h-screen align-content-center" id="resultScreen">
+                <v-container class="result-con">
                     <h2>ผลคะแนนของคุณ</h2>
                     <p class="mb-4">คุณตอบถูก {{ correctAnswers }} ข้อ จากทั้งหมด {{ questions.length }} ข้อ ({{
                         percentage }}%)</p>
@@ -246,7 +266,7 @@
                 const questions = ref([]);
                 const userAnswers = ref([]);
                 const timer = ref(null);
-                const timeRemaining = ref(1800);
+                const timeRemaining = ref(1);
 
                 const timeDisplay = computed(() => {
                     const minutes = String(Math.floor(timeRemaining.value / 60)).padStart(2, '0');
