@@ -132,7 +132,7 @@
         score: 0,
         valid: false,
         currentQuestion: 0,
-        timeLeft: 0,
+        timeLeft: 0, 
       };
 
       sstartTimer(duration) {
@@ -140,11 +140,11 @@
         this.timerInterval = setInterval(() => {
           this.setState((prevState) => {
             if (prevState.timeLeft <= 1) {
-              clearInterval(this.timerInterval);
+              clearInterval(this.timerInterval); 
               this.autoSubmit();
               return { timeLeft: 0 };
             }
-            return { timeLeft: prevState.timeLeft - 1 };
+            return { timeLeft: prevState.timeLeft - 1 }; 
           });
         }, 1000);
       }
@@ -157,14 +157,15 @@
       componentDidMount() {
         const { qlist, status } = this.state;
         if (status === 1) {
-          const quizDuration = qlist.length * 90;
-          this.startTimer(quizDuration * 60);
+          const quizDuration = qlist.length * 90; 
+          this.startTimer(quizDuration * 60); 
         }
       }
 
       componentWillUnmount() {
         if (this.timerInterval) {
-          clearInterval(this.timerInterval);
+          clearInterval(this.timerInterval); 
+        }
       }
 
 
@@ -175,7 +176,7 @@
 
       async load_data() {
         try {
-          const res = await fetch("quiz2.json");
+          const res = await fetch("quiz.json");
           if (!res.ok) throw new Error('ไม่สามารถโหลดไฟล์ได้');
           const data = await res.json();
           this.setState({ qlist: data });
