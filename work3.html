@@ -175,7 +175,7 @@
 
       async load_data() {
         try {
-          const res = await fetch("quiz.json");
+          const res = await fetch("quiz2.json");
           if (!res.ok) throw new Error('ไม่สามารถโหลดไฟล์ได้');
           const data = await res.json();
           this.setState({ qlist: data });
