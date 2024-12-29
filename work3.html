@@ -2,10 +2,14 @@
 <html lang="th">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCT Mock Tests</title>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
@@ -13,11 +17,12 @@
     body {
       font-family: 'Prompt', sans-serif;
       background-color: #f4f4f9;
+      min-width: 320px;
     }
 
     .card {
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 1em;
+      padding: 0.6em;
     }
 
     .card-header {
@@ -33,20 +38,83 @@
       text-align: center;
     }
 
-    .container {
-      max-width: 800px;
-    }
-
-    .alert {
-      margin-top: 20px;
-    }
-
     .btn {
-      border-radius: 50px;
+      border-radius: 0.6em;
+      padding: 0.4em 1em;
     }
 
     .mt-3 {
       margin-top: 20px;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .choice {
+      background-color: #fafafa;
+      padding: 0.8em 0.8em 0.8em 2.5em;
+      border-radius: 0.5em;
+      margin: 0.3em 0em;
+    }
+
+    .btn-outline-primary {
+      outline-width: 10px;
+    }
+
+    .summary-btn-container {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5em;
+      justify-content: center;
+    }
+
+    .feedback-container {
+      background-color: #fafafa;
+      padding: 0.8em 1em;
+      border-radius: 0.5em;
+      margin: 0.3em 0.1;
+    }
+
+    .feedback-correct {
+      background-color: #18b30030;
+    }
+
+    .feedback-incorrect {
+      background-color: #b3000030;
+    }
+    
+    .feedback-icon {
+      margin-right: 0.8em;
+    }
+
+    .feedback-icon-correct {
+      color: #18b300;
+    }
+
+    .feedback-icon-incorrect {
+      color: #b30000;
+    }
+
+    @media (max-width: 768px) {
+      .btn-container {
+        flex-direction: column-reverse;
+        gap: 0.5em;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .summary-btn-container {
+        flex-direction: column;
+      }
+
+      .question-text{
+        font-size: 1em;
+      }
     }
   </style>
 </head>
@@ -63,8 +131,43 @@
         answers: {},
         score: 0,
         valid: false,
-        currentQuestion: 0
+        currentQuestion: 0,
+        timeLeft: 0, // เวลาที่เหลือในหน่วยวินาที
       };
+
+      sstartTimer(duration) {
+        this.setState({ timeLeft: duration }); // ตั้งค่าเวลาเริ่มต้น
+        this.timerInterval = setInterval(() => {
+          this.setState((prevState) => {
+            if (prevState.timeLeft <= 1) {
+              clearInterval(this.timerInterval); // หยุดนาฬิกาเมื่อหมดเวลา
+              this.autoSubmit();
+              return { timeLeft: 0 };
+            }
+            return { timeLeft: prevState.timeLeft - 1 }; // ลดเวลาไปทีละวินาที
+          });
+        }, 1000);
+      }
+
+      autoSubmit() {
+        alert("หมดเวลาแล้ว! ระบบจะส่งคำตอบให้โดยอัตโนมัติ");
+        this.checkAnswer();
+      }
+
+      componentDidMount() {
+        const { qlist, status } = this.state;
+        if (status === 1) {
+          const quizDuration = qlist.length * 90; // 1.5 นาทีต่อคำถาม
+          this.startTimer(quizDuration * 60); // เปลี่ยนจากนาทีเป็นวินาที
+        }
+      }
+
+      componentWillUnmount() {
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval); // หยุดนาฬิกาเมื่อคอมโพเนนต์ถูกลบ
+        }
+      }
+
 
       constructor() {
         super();
@@ -72,8 +175,15 @@
       }
 
       async load_data() {
-        var res = await fetch("quiz3.json");
-        this.setState({ qlist: await res.json() });
+        try {
+          const res = await fetch("quiz3.json");
+          if (!res.ok) throw new Error('ไม่สามารถโหลดไฟล์ได้');
+          const data = await res.json();
+          this.setState({ qlist: data });
+        } catch (error) {
+          console.error(error);
+          alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
+        }
       }
 
       checkAnswer() {
@@ -81,6 +191,19 @@
           total += (q.answer == this.state.answers["q" + i]) ? 1 : 0;
           return total;
         }, 0);
+
+        const notAnsweredQuestions = this.state.qlist
+          .map((q, i) => (this.state.answers["q" + i] ? null : i + 1))
+          .filter((q) => q !== null);
+
+        if (notAnsweredQuestions.length > 0) {
+          const userConfirmed = window.confirm(`คุณยังไม่ได้ตอบคำถามที่: ${notAnsweredQuestions.join(", ")}\nยืนยันที่จะส่งคำตอบหรือไม่?`);
+
+          if (!userConfirmed) {
+            return;
+          }
+        }
+
         this.setState({ status: 2, score: score });
       }
 
@@ -97,22 +220,22 @@
         this.setState({ currentQuestion: this.state.currentQuestion + 1 });
       }
 
+      resetAnswers() {
+        this.setState({ answers: {}, currentQuestion: 0, score: 0, valid: false });
+      }
+
+
       render() {
         return (
           <div className="card">
-            <div className="card-header">
-              <b>Work3 :</b> แบบทดสอบ ด้วย ReactJS
-            </div>
             <div className="card-body">
               {
                 (this.state.status === 0) ? <Menu app={this} />
                   : (this.state.status === 1) ? <QList list={this.state.qlist} app={this} />
                     : (this.state.status === 2) ? <ShowScore app={this} />
-                      : <div>Error</div>
+                      : (this.state.status === 3) ? <AnswerKey app={this} />
+                        : <div>Error</div>
               }
-            </div>
-            <div className="card-footer">
-              By 663380179-0 Phanuwat Lakronratch, College of Computing, Khon Kaen University
             </div>
           </div>
         );
@@ -120,9 +243,23 @@
     }
 
     function Menu(props) {
+      const { qlist } = props.app.state;
       return (
-        <div>
-          <Button variant="primary" onClick={() => props.app.setState({ status: 1 })} className="w-100 py-3">เริ่มทำแบบทดสอบ</Button>
+        <div class="text-center">
+          <h3 class="fw-semibold">ยินดีต้อนรับสู่แบบทดสอบ</h3>
+          <h5>ข้อสอบ PAT 5</h5>
+          <p class="text-primary">ปี 2554 วิชา PAT 5</p>
+          <p>ระดับชั้น ม.6 จำนวน {qlist.length} ข้อ เวลา {qlist.length * 1.5} นาที</p>
+          <Button
+            variant="primary"
+            onClick={() => {
+              props.app.resetAnswers();
+              props.app.setState({ status: 1 });
+            }}
+            class="start-btn"
+          >
+            เริ่มทำแบบทดสอบ <i class="bi bi-play-fill"></i>
+          </Button>
         </div>
       );
     }
@@ -145,30 +282,33 @@
       return (
         <div>
           <QBlock q={q} i={currentQuestion} app={app} handleChange={handleChange} />
-          <div className="mt-3">
-            <Button
-              variant="secondary"
-              onClick={() => app.goToPreviousQuestion()}
-              disabled={currentQuestion === 0}
-              className="me-2"
-            >
-              ย้อนกลับ
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => app.goToNextQuestion()}
-              className="ms-2"
-            >
-              ถัดไป
-            </Button>
-          </div>
-          <div className="mt-3">
-            {notAnsweredQuestions.length > 0 ? (
-              <Alert variant="warning">
-                กรุณาตอบคำถามข้อที่ {notAnsweredQuestions.join(", ")} ให้ครบ
-              </Alert>
-            ) : (
-              <Button variant="success" onClick={() => app.checkAnswer()}>ตรวจคำตอบ</Button>
+          <div className="mt-3 btn-container d-flex justify-content-between">
+            {currentQuestion == 0 && (
+              <button
+                class="btn btn-outline-primary back-btn"
+                onClick={() => app.setState({ status: 0 })}
+              >
+                <i class="bi bi-house"></i> กลับหน้าหลัก
+              </button>
+            )}
+            {currentQuestion > 0 && (
+              <button
+                class="btn btn-outline-primary back-btn"
+                onClick={() => app.goToPreviousQuestion()}
+              >
+                <i class="bi bi-arrow-left-circle"></i> ย้อนกลับ
+              </button>
+            )}
+            {currentQuestion < qlist.length - 1 && (
+              <Button
+                variant="primary"
+                onClick={() => app.goToNextQuestion()}
+              >
+                ข้อถัดไป <i class="bi bi-arrow-right-circle"></i>
+              </Button>
+            )}
+            {currentQuestion == qlist.length - 1 && (
+              <Button onClick={() => app.checkAnswer()}>ตรวจคำตอบ <i class="bi bi-check-circle"></i></Button>
             )}
           </div>
         </div>
@@ -177,13 +317,23 @@
 
     function QBlock({ i, q, app, handleChange }) {
       const options = ["ก", "ข", "ค", "ง"];
+      const formatTime = (timeLeft) => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      };
       return (
         <div className="mb-4">
-          <h5>{i + 1}. <span dangerouslySetInnerHTML={{ __html: q.title }}></span></h5>
+          <div class="d-flex justify-content-between mb-2">
+            <p class="text-primary mb-0">คำถามที่{i + 1}</p>
+            <p className="text-primary mb-0">เวลาที่เหลือ: {formatTime(app.state.timeLeft)}</p>
+          </div>
+          <h5 class="mb-3 question-text"><span dangerouslySetInnerHTML={{ __html: q.title }}></span></h5>
           <div>
             {q.options.map((p, pi) => (
-              <div key={pi} className="form-check">
+              <label key={pi} className="form-check choice" for={pi + 1}>
                 <input
+                  id={pi + 1}
                   type="radio"
                   name={"q" + i}
                   value={pi + 1}
@@ -191,8 +341,8 @@
                   className="form-check-input"
                   checked={app.state.answers["q" + i] == (pi + 1)}
                 />
-                <label className="form-check-label">{options[pi]}.{p}</label>
-              </div>
+                <label className="form-check-label" for={pi + 1}>{options[pi]}.{p}</label>
+              </label>
             ))}
           </div>
         </div>
@@ -201,12 +351,54 @@
 
     function ShowScore({ app }) {
       return (
-        <div className="p-2">
-          <h4>คุณได้คะแนน {app.state.score}</h4>
-          <Button variant="secondary" onClick={() => app.setState({ status: 0 })} className="w-100 py-3">ตกลง</Button>
+        <div class="text-center">
+          <i class="bi bi-trophy text-primary fs-4"></i>
+          <h5 class="fw-semibold">ผลคะแนนของคุณ</h5>
+          <p>คุณได้คะแนน {app.state.score}</p>
+          <div class="summary-btn-container">
+            <Button onClick={() => app.setState({ status: 3 })}>ดูเฉลย <i class="bi bi-clipboard-check"></i></Button>
+            <button onClick={() => app.setState({ status: 0 })} class="btn btn-outline-primary">ทำแบบทดสอบอีกครั้ง <i class="bi bi-arrow-clockwise"></i></button>
+          </div>
         </div>
       );
     }
+
+    function AnswerKey({ app }) {
+      const { qlist, answers } = app.state;
+      const options = ["ก", "ข", "ค", "ง"];
+
+      return (
+        <div>
+          <h5 className="text-center fw-semibold">เฉลยคำถาม</h5>
+          {qlist.map((q, i) => {
+            const correctAnswer = q.answer;
+            const userAnswer = answers["q" + i] || 'ยังไม่ได้ตอบ';
+            const correctOption = options[correctAnswer - 1];
+
+            let answerFeedback;
+            if (userAnswer === 'ยังไม่ได้ตอบ') {
+              answerFeedback = <p class="feedback-container"><i class="bi bi-question-circle feedback-icon"></i>คุณไม่ได้ตอบ คำตอบที่ถูกต้องคือ <strong>{correctOption}.{q.options[correctAnswer - 1]}</strong></p>;
+            } else if (userAnswer == correctAnswer) {
+              answerFeedback = <p class="feedback-container feedback-correct"><i class="bi bi-check-circle feedback-icon-correct feedback-icon"></i>คุณตอบถูก! คำตอบที่ถูกต้องคือ <strong>{correctOption}.{q.options[correctAnswer - 1]}</strong></p>;
+            } else {
+              answerFeedback = <p class="feedback-container feedback-incorrect"><i class="bi bi-x-circle feedback-icon-incorrect feedback-icon"></i>คุณตอบผิด คุณตอบ <strong>{options[userAnswer - 1]}.{q.options[userAnswer - 1]}</strong> คำตอบที่ถูกต้องคือ <strong>{correctOption}.{q.options[correctAnswer - 1]}</strong></p>;
+            }
+
+            return (
+              <div key={i} className="mb-4">
+                <p class="text-primary mb-0">คำถามที่{i + 1}</p>
+                <h5 class="question-text"><span dangerouslySetInnerHTML={{ __html: q.title }}></span></h5>
+                {answerFeedback}
+              </div>
+            );
+          })}
+          <div className="text-center mt-3">
+            <button onClick={() => app.setState({ status: 0 })} class="btn btn-primary">ทำแบบทดสอบอีกครั้ง <i class="bi bi-arrow-clockwise"></i></button>
+          </div>
+        </div>
+      );
+    }
+
 
     const container = document.getElementById('myapp');
     const root = ReactDOM.createRoot(container);
