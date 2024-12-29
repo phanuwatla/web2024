@@ -132,19 +132,19 @@
         score: 0,
         valid: false,
         currentQuestion: 0,
-        timeLeft: 0, // เวลาที่เหลือในหน่วยวินาที
+        timeLeft: 0,
       };
 
       sstartTimer(duration) {
-        this.setState({ timeLeft: duration }); // ตั้งค่าเวลาเริ่มต้น
+        this.setState({ timeLeft: duration }); 
         this.timerInterval = setInterval(() => {
           this.setState((prevState) => {
             if (prevState.timeLeft <= 1) {
-              clearInterval(this.timerInterval); // หยุดนาฬิกาเมื่อหมดเวลา
+              clearInterval(this.timerInterval);
               this.autoSubmit();
               return { timeLeft: 0 };
             }
-            return { timeLeft: prevState.timeLeft - 1 }; // ลดเวลาไปทีละวินาที
+            return { timeLeft: prevState.timeLeft - 1 };
           });
         }, 1000);
       }
@@ -157,15 +157,14 @@
       componentDidMount() {
         const { qlist, status } = this.state;
         if (status === 1) {
-          const quizDuration = qlist.length * 90; // 1.5 นาทีต่อคำถาม
-          this.startTimer(quizDuration * 60); // เปลี่ยนจากนาทีเป็นวินาที
+          const quizDuration = qlist.length * 90;
+          this.startTimer(quizDuration * 60);
         }
       }
 
       componentWillUnmount() {
         if (this.timerInterval) {
-          clearInterval(this.timerInterval); // หยุดนาฬิกาเมื่อคอมโพเนนต์ถูกลบ
-        }
+          clearInterval(this.timerInterval);
       }
 
 
@@ -176,7 +175,7 @@
 
       async load_data() {
         try {
-          const res = await fetch("quiz3.json");
+          const res = await fetch("quiz.json");
           if (!res.ok) throw new Error('ไม่สามารถโหลดไฟล์ได้');
           const data = await res.json();
           this.setState({ qlist: data });
