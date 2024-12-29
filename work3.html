@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #f4f4f9;
+    }
+
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #007cd4;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .card-footer {
+      background-color: #161729;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+    }
+
+    .alert {
+      margin-top: 20px;
+    }
+
+    .btn {
+      border-radius: 50px;
+    }
+
+    .mt-3 {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="myapp" class="container p-4 mt-5"></div>
+  <script type="text/babel">
+    const { Button, Alert } = ReactBootstrap;
+
+    class App extends React.Component {
+      state = {
+        qlist: [],
+        status: 0,
+        answers: {},
+        score: 0,
+        valid: false,
+        currentQuestion: 0
+      };
+
+      constructor() {
+        super();
+        this.load_data();
+      }
+
+      async load_data() {
+        var res = await fetch("quiz3.json");
+        this.setState({ qlist: await res.json() });
+      }
+
+      checkAnswer() {
+        var score = this.state.qlist.reduce((total, q, i) => {
+          total += (q.answer == this.state.answers["q" + i]) ? 1 : 0;
+          return total;
+        }, 0);
+        this.setState({ status: 2, score: score });
+      }
+
+      validate() {
+        var valid = this.state.qlist.every((q, i) => this.state.answers["q" + i]);
+        this.setState({ valid });
+      }
+
+      goToPreviousQuestion() {
+        this.setState({ currentQuestion: this.state.currentQuestion - 1 });
+      }
+
+      goToNextQuestion() {
+        this.setState({ currentQuestion: this.state.currentQuestion + 1 });
+      }
+
+      render() {
+        return (
+          <div className="card">
+            <div className="card-header">
+              <b>Work3 :</b> แบบทดสอบ ด้วย ReactJS
+            </div>
+            <div className="card-body">
+              {
+                (this.state.status === 0) ? <Menu app={this} />
+                  : (this.state.status === 1) ? <QList list={this.state.qlist} app={this} />
+                    : (this.state.status === 2) ? <ShowScore app={this} />
+                      : <div>Error</div>
+              }
+            </div>
+            <div className="card-footer">
+              By 663380179-0 Phanuwat Lakronratch, College of Computing, Khon Kaen University
+            </div>
+          </div>
+        );
+      }
+    }
+
+    function Menu(props) {
+      return (
+        <div>
+          <Button variant="primary" onClick={() => props.app.setState({ status: 1 })} className="w-100 py-3">เริ่มทำแบบทดสอบ</Button>
+        </div>
+      );
+    }
+
+    function QList({ app }) {
+      const { qlist, currentQuestion, answers } = app.state;
+      const q = qlist[currentQuestion];
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        let newAnswers = { ...answers };
+        newAnswers[name] = value;
+        app.setState({ answers: newAnswers });
+      };
+
+      const notAnsweredQuestions = qlist
+        .map((q, i) => (answers["q" + i] ? null : i + 1))
+        .filter((q) => q !== null);
+
+      return (
+        <div>
+          <QBlock q={q} i={currentQuestion} app={app} handleChange={handleChange} />
+          <div className="mt-3">
+            <Button
+              variant="secondary"
+              onClick={() => app.goToPreviousQuestion()}
+              disabled={currentQuestion === 0}
+              className="me-2"
+            >
+              ย้อนกลับ
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => app.goToNextQuestion()}
+              className="ms-2"
+            >
+              ถัดไป
+            </Button>
+          </div>
+          <div className="mt-3">
+            {notAnsweredQuestions.length > 0 ? (
+              <Alert variant="warning">
+                กรุณาตอบคำถามข้อที่ {notAnsweredQuestions.join(", ")} ให้ครบ
+              </Alert>
+            ) : (
+              <Button variant="success" onClick={() => app.checkAnswer()}>ตรวจคำตอบ</Button>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function QBlock({ i, q, app, handleChange }) {
+      const options = ["ก", "ข", "ค", "ง"];
+      return (
+        <div className="mb-4">
+          <h5>{i + 1}. <span dangerouslySetInnerHTML={{ __html: q.title }}></span></h5>
+          <div>
+            {q.options.map((p, pi) => (
+              <div key={pi} className="form-check">
+                <input
+                  type="radio"
+                  name={"q" + i}
+                  value={pi + 1}
+                  onChange={handleChange}
+                  className="form-check-input"
+                  checked={app.state.answers["q" + i] == (pi + 1)}
+                />
+                <label className="form-check-label">{options[pi]}.{p}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function ShowScore({ app }) {
+      return (
+        <div className="p-2">
+          <h4>คุณได้คะแนน {app.state.score}</h4>
+          <Button variant="secondary" onClick={() => app.setState({ status: 0 })} className="w-100 py-3">ตกลง</Button>
+        </div>
+      );
+    }
+
+    const container = document.getElementById('myapp');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+  </script>
+</body>
+
+</html>
