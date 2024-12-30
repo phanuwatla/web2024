@@ -29,7 +29,7 @@
     .card {
       border-radius: 1em;
       padding: 0.6em;
-      overflow-y: auto;
+      overflow-y: scroll;
     }
 
     .btn {
@@ -276,7 +276,7 @@
       return (
         <div>
           <QBlock q={q} i={currentQuestion} app={app} handleChange={handleChange} />
-          <div className="mt-3 btn-container d-flex justify-content-between">
+          <div className="mt-3 mb-3 btn-container d-flex justify-content-between">
             {currentQuestion == 0 && (
               <button
                 class="btn btn-outline-primary back-btn"
