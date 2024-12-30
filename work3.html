@@ -26,6 +26,15 @@
       overflow: hidden;
     }
 
+    .container {
+      height: 100vh;
+      background-image: url('./img/w3bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
     .card {
       border-radius: 1em;
       padding: 0.6em;
@@ -223,6 +232,7 @@
 
       render() {
         return (
+          <div class="container">
           <div className="card">
             <div className="card-body">
               {
@@ -233,6 +243,7 @@
                         : <div>Error</div>
               }
             </div>
+          </div>
           </div>
         );
       }
