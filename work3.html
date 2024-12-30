@@ -169,7 +169,7 @@
 
       async load_data() {
         try {
-          const res = await fetch("quiz.json");
+          const res = await fetch("quiz3.json");
           if (!res.ok) throw new Error('ไม่สามารถโหลดไฟล์ได้');
           const data = await res.json();
           this.setState({ qlist: data });
@@ -309,7 +309,7 @@
     }
 
     function QBlock({ i, q, app, handleChange }) {
-      const options = ["ก", "ข", "ค", "ง"];
+      const options = ["ก", "ข", "ค", "ง", "จ"];
       const formatTime = (timeLeft) => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
@@ -358,7 +358,7 @@
 
     function AnswerKey({ app }) {
       const { qlist, answers } = app.state;
-      const options = ["ก", "ข", "ค", "ง"];
+      const options = ["ก", "ข", "ค", "ง", "จ"];
 
       return (
         <div>
