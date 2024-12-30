@@ -18,14 +18,12 @@
       font-family: 'Prompt', sans-serif;
       background-color: #f4f4f9;
       min-width: 320px;
-    }
-
-    page-container {
       height: 100vh;
       background-image: url('./img/w3bg.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      overflow: auto;
     }
 
     .card {
@@ -224,7 +222,6 @@
 
       render() {
         return (
-          <div class="page-container">
           <div className="card">
             <div className="card-body">
               {
@@ -235,7 +232,6 @@
                         : <div>Error</div>
               }
             </div>
-          </div>
           </div>
         );
       }
