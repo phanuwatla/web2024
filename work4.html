@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduce Myrself | My VR</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.2/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+
+        <a-camera position="0 1.6 1" look-controls="enabled: true"></a-camera>
+
+        <a-sky src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"></a-sky>
+
+        <a-entity id="fireworks" position="0 10 -20" rotation="0 0 0">
+            <a-light type="point" intensity="2" color="#ff0000" position="0 5 0" animation="property: position; to: 0 15 -20; dir: alternate; loop: true; dur: 1000"></a-light>
+            <a-light type="point" intensity="2" color="#00ff00" position="0 5 0" animation="property: position; to: 0 15 -19; dir: alternate; loop: true; dur: 1200"></a-light>
+            <a-light type="point" intensity="2" color="#0000ff" position="0 5 0" animation="property: position; to: 0 15 -18; dir: alternate; loop: true; dur: 1500"></a-light>
+        </a-entity>
+
+        <a-entity position="0 10 -10" rotation="0 0 0">
+            <a-text value="Phanuwat Lakronratch" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt" scale="10 10 10"></a-text>
+        </a-entity>
+
+        <a-entity position="0 8 -10" rotation="0 0 0">
+            <a-text value="Phanuwat Lakronratch" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt" scale="10 10 10"></a-text>
+        </a-entity>
+
+        <a-entity position="0 6 -10" rotation="0 0 0">
+            <a-text value="Phanuwat Lakronratch" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt" scale="10 10 10"></a-text>
+        </a-entity>
+
+        <a-light type="directional" position="0 2 5" intensity="1" cast-shadow="true"></a-light>
+
+        <a-entity gltf-model="./assets/chicken_guy.glb" animation-mixer="clip: Armature|Walk" scale="0.8 0.8 0.8"
+            position="0.2 0 -3" cast-shadow="true"
+            animation="property: rotation; to: 0 360 0; dur: 5000; loop: true; easing: linear"></a-entity>
+
+            <a-ring position="0 0.05 0" rotation="90 0 0" radius-inner="0.5" radius-outer="1" color="#00FF00" emissive="#00FF00" emissive-intensity="1" opacity="0.8"></a-ring>
+
+        <a-entity gltf-model="./assets/table.glb" scale="0.4 0.4 0.4"
+            position="2 0 -3.5" cast-shadow="true"></a-entity>
+        
+        <a-entity gltf-model="./assets/tree.glb" scale="1 1 1"
+            position="6.2 0 -4.2" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/house.glb" scale="0.4 0.4 0.4"  rotation="0 45 0"
+            position="-6.2 0 -3.5" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/bike.glb" scale="0.2 0.2 0.2"  rotation="0 -65 0"
+            position="4.8 0 -2.1" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/flower.glb" scale="0.4 0.4 0.4"  rotation="0 -45 0"
+            position="-3 0 -2.8" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/pie.glb" scale="0.8 0.8 0.8" rotation="-30 190 0"
+            position="2 1.6 -3.4" cast-shadow="true" animation="property: position; to: 2 1.8 -3.4; dir: alternate; loop: true; dur: 4000"></a-entity>
+
+        <a-entity gltf-model="./assets/bird.glb" position="5 15 -10" scale="2 2 2" rotation="0 45 0"
+            animation="property: position; to: 5 17 -10; dir: alternate; loop: true; dur: 4000"></a-entity>
+
+        <a-entity gltf-model="./assets/bird.glb" position="-7 12 -8" scale="1.5 1.5 1.5" rotation="0 30 0"
+            animation="property: position; to: -7 14 -8; dir: alternate; loop: true; dur: 5000"></a-entity>
+
+        <a-entity gltf-model="./assets/bird.glb" position="3 18 -12" scale="1 1 1" rotation="0 60 0"
+            animation="property: position; to: 3 20 -12; dir: alternate; loop: true; dur: 6000"></a-entity>
+
+        <a-entity gltf-model="./assets/bird.glb" position="-10 10 -15" scale="2 2 2" rotation="0 90 0"
+            animation="property: position; to: -10 12 -15; dir: alternate; loop: true; dur: 4500"></a-entity>
+
+        <a-entity gltf-model="./assets/bird.glb" position="0 20 -5" scale="1.2 1.2 1.2" rotation="0 120 0"
+            animation="property: position; to: 0 22 -5; dir: alternate; loop: true; dur: 5500"></a-entity>
+
+            <a-entity gltf-model="./assets/bird.glb" position="-8 16 -12" scale="1.8 1.8 1.8" rotation="0 75 0"
+            animation="property: position; to: -8 18 -12; dir: alternate; loop: true; dur: 5200"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="6 19 -10" scale="1.3 1.3 1.3" rotation="0 135 0"
+            animation="property: position; to: 6 21 -10; dir: alternate; loop: true; dur: 4800"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-4 14 -9" scale="1.5 1.5 1.5" rotation="0 100 0"
+            animation="property: position; to: -4 16 -9; dir: alternate; loop: true; dur: 4300"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="8 12 -7" scale="1.7 1.7 1.7" rotation="0 50 0"
+            animation="property: position; to: 8 14 -7; dir: alternate; loop: true; dur: 4700"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-6 17 -10" scale="2 2 2" rotation="0 90 0"
+            animation="property: position; to: -6 19 -10; dir: alternate; loop: true; dur: 4000"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="4 15 -14" scale="1.6 1.6 1.6" rotation="0 140 0"
+            animation="property: position; to: 4 17 -14; dir: alternate; loop: true; dur: 5200"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-10 11 -8" scale="1.4 1.4 1.4" rotation="0 30 0"
+            animation="property: position; to: -10 13 -8; dir: alternate; loop: true; dur: 4600"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="7 16 -6" scale="1.9 1.9 1.9" rotation="0 90 0"
+            animation="property: position; to: 7 18 -6; dir: alternate; loop: true; dur: 5100"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-9 13 -5" scale="1.2 1.2 1.2" rotation="0 125 0"
+            animation="property: position; to: -9 15 -5; dir: alternate; loop: true; dur: 4900"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="2 20 -12" scale="1.5 1.5 1.5" rotation="0 60 0"
+            animation="property: position; to: 2 22 -12; dir: alternate; loop: true; dur: 5000"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="1 18 -10" scale="1.3 1.3 1.3" rotation="0 45 0"
+            animation="property: position; to: 1 20 -10; dir: alternate; loop: true; dur: 4300"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-5 10 -8" scale="1.6 1.6 1.6" rotation="0 70 0"
+            animation="property: position; to: -5 12 -8; dir: alternate; loop: true; dur: 5100"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="6 14 -15" scale="1.8 1.8 1.8" rotation="0 110 0"
+            animation="property: position; to: 6 16 -15; dir: alternate; loop: true; dur: 4200"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-3 13 -7" scale="1.5 1.5 1.5" rotation="0 85 0"
+            animation="property: position; to: -3 15 -7; dir: alternate; loop: true; dur: 4800"></a-entity>
+            
+            <a-entity gltf-model="./assets/bird.glb" position="10 20 -10" scale="2 2 2" rotation="0 135 0"
+            animation="property: position; to: 10 22 -10; dir: alternate; loop: true; dur: 5500"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-12 25 -5" scale="1.8 1.8 1.8" rotation="0 90 0"
+            animation="property: position; to: -12 27 -5; dir: alternate; loop: true; dur: 5200"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="7 23 -13" scale="1.5 1.5 1.5" rotation="0 60 0"
+            animation="property: position; to: 7 25 -13; dir: alternate; loop: true; dur: 4900"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-8 18 -18" scale="2 2 2" rotation="0 150 0"
+            animation="property: position; to: -8 20 -18; dir: alternate; loop: true; dur: 4800"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="9 22 -6" scale="1.7 1.7 1.7" rotation="0 110 0"
+            animation="property: position; to: 9 24 -6; dir: alternate; loop: true; dur: 5400"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-6 16 -7" scale="1.8 1.8 1.8" rotation="0 45 0"
+            animation="property: position; to: -6 18 -7; dir: alternate; loop: true; dur: 4700"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="12 21 -11" scale="2 2 2" rotation="0 120 0"
+            animation="property: position; to: 12 23 -11; dir: alternate; loop: true; dur: 5600"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-9 15 -16" scale="1.6 1.6 1.6" rotation="0 70 0"
+            animation="property: position; to: -9 17 -16; dir: alternate; loop: true; dur: 5000"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="14 24 -8" scale="1.5 1.5 1.5" rotation="0 150 0"
+            animation="property: position; to: 14 26 -8; dir: alternate; loop: true; dur: 5500"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-5 19 -14" scale="1.9 1.9 1.9" rotation="0 95 0"
+            animation="property: position; to: -5 21 -14; dir: alternate; loop: true; dur: 5200"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="3 20 -12" scale="1.4 1.4 1.4" rotation="0 60 0"
+            animation="property: position; to: 3 22 -12; dir: alternate; loop: true; dur: 4900"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-13 14 -5" scale="1.8 1.8 1.8" rotation="0 80 0"
+            animation="property: position; to: -13 16 -5; dir: alternate; loop: true; dur: 5000"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="11 17 -9" scale="2 2 2" rotation="0 100 0"
+            animation="property: position; to: 11 19 -9; dir: alternate; loop: true; dur: 5300"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="-4 14 -10" scale="1.7 1.7 1.7" rotation="0 50 0"
+            animation="property: position; to: -4 16 -10; dir: alternate; loop: true; dur: 4700"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="2 22 -16" scale="2 2 2" rotation="0 120 0"
+            animation="property: position; to: 2 24 -16; dir: alternate; loop: true; dur: 5400"></a-entity>
+    
+        <a-entity gltf-model="./assets/bird.glb" position="0 25 -6" scale="1.9 1.9 1.9" rotation="0 140 0"
+            animation="property: position; to: 0 27 -6; dir: alternate; loop: true; dur: 5100"></a-entity>
+
+        <a-entity position="-1.6 1.6 -3" rotation="0 30 0">
+            <a-text class="text"
+                value="นายภานุวัฒน์ ลครราช 663380179-0 เทคโนโลยีสารสนเทศ วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น"
+                color="#FFFFFF" font="./fonts/Prompt-Regular-msdf.json" align="center" width="3"
+                negate="false"></a-text>
+        </a-entity>
+
+        <a-entity gltf-model="./assets/flat_side.glb" position="0 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="4 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="8 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_corner.glb" position="12 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="-4 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="-8 -1 -8" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_corner.glb" position="-12 -1 -8" scale="2 2 2" rotation="0 180 0"></a-entity>
+
+        <a-entity gltf-model="./assets/flat_center.glb" position="0 -1 -4" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_center.glb" position="4 -1 -4" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_center.glb" position="8 -1 -4" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="12 -1 -4" scale="2 2 2" rotation="0 0 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_center.glb" position="-4 -1 -4" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_center.glb" position="-8 -1 -4" scale="2 2 2" rotation="0 90 0"></a-entity>
+        <a-entity gltf-model="./assets/flat_side.glb" position="-12 -1 -4" scale="2 2 2" rotation="0 180 0"></a-entity>
+        
+            
+    </a-scene>
+</body>
+
+</html>
