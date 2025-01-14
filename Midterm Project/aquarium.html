@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanic Wonders | A VR Aquarium Experience</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+        <!-- กล้องเดินได้ -->
+        <a-entity camera wasd-controls look-controls="pointerLockEnabled: true" position="0 3 5"
+            dynamic-body></a-entity>
+
+        <a-sky src="https://th.bing.com/th/id/OIP.uS7g8H39EpmpZV8-dgOg2gHaEK?rs=1&pid=ImgDetMain"></a-sky>
+
+        <!-- พื้น -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#01579b"
+            material="src: #velvet-texture; repeat: 4 4; shader: flat;" receive-shadow="true" static-body>
+        </a-plane>
+
+        <!-- ผนัง -->
+        <a-box position="0 10 25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1" receive-shadow="true" static-body></a-box>
+        <a-box position="25 10 0" rotation="0 90 0" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1"
+            receive-shadow="true" static-body></a-box>
+        <a-box position="-25 10 0" rotation="0 90 0" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1"
+            receive-shadow="true" static-body></a-box>
+        <a-box position="0 10 -25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1" receive-shadow="true" static-body></a-box>
+
+        <!-- เพดาน -->
+        <a-box position="0 20 0" depth="50" width="50" height="0.1" color="#b3b1ad" receive-shadow="true" static-body></a-box>
+
+        <!-- แสง -->
+        <a-light type="ambient" color="#01a6ba" intensity="0.5" position="0 20 0"></a-light>
+        <a-light type="point" color="#0a378b5" intensity="0.8" position="5 15 5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#00cccc" intensity="0.8" position="-5 15 5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#01a6ba" intensity="0.8" position="5 15 -5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#0a378b5" intensity="0.8" position="-5 15 -5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#00cccc" intensity="0.8" position="5 5 5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#01a6ba" intensity="0.8" position="-5 5 5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#0a378b5" intensity="0.8" position="5 5 -5" cast-shadow="true"></a-light>
+        <a-light type="point" color="#00cccc" intensity="0.8" position="-5 5 -5" cast-shadow="true"></a-light>
+
+
+        <a-box position="-10 1.5 -15" width="30" height="3" depth="20" color="#01579b"
+            material="src: #velvet-texture; repeat: 1 1 shader: flat;" static-body></a-box>
+        <a-box position="5.5 1.15 -15" width="1" height="2.3" depth="20" color="#01579b"
+            material="src: #velvet-texture; repeat: 1 1 shader: flat;" static-body></a-box>
+        <a-box position="6.5 0.8 -15" width="1" height="1.6" depth="20" color="#01579b"
+            material="src: #velvet-texture; repeat: 1 1 shader: flat;" static-body></a-box>
+        <a-box position="7.5 0.45 -15" width="1" height="0.9" depth="20" color="#01579b"
+            material="src: #velvet-texture; repeat: 1 1 shader: flat;" static-body></a-box>
+        <a-box position="8.5 0.1 -15" width="1" height="0.9" depth="20" color="#01579b"
+            material="src: #velvet-texture; repeat: 1 1 shader: flat;" static-body></a-box>
+
+        <a-entity gltf-model="./assets/human.glb" scale="0.5 0.5 0.5" position="0.2 0 0" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="3 1 0" cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/stairs.glb" scale="2 2.1 2" position="-8 0 -9.5" cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="-3 1 0" rotation="0 205 0"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/whale.glb" scale="2 2 2" position="0 16 0" rotation="0 90 0"
+            cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="20 1 -1.5" rotation="0 150 0"
+            cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="19 1 -23" rotation="0 100 0"
+            cast-shadow="true"></a-entity>
+
+        <a-entity position="0 18 -24.5" rotation="0 0 0">
+            <a-text value="Oceanic Wonders" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt" scale="20 20 20"></a-text>
+        </a-entity>
+
+        <a-entity position="0 13 -24.5" rotation="0 0 0">
+            <a-text value="A VR Aquarium Experience" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt" scale="8 8 8"></a-text>
+        </a-entity>
+
+        <!-- Glass Room as a Single Entity -->
+        <a-entity position="22 0.25 -8">
+            <!-- Floor -->
+            <a-box position="0 0 0" width="6" height="0.5" depth="8" color="#cccccc">
+            </a-box>
+
+            <!-- Ceiling -->
+            <a-box position="0 15 0" width="6" height="0.5" depth="8" color="#cccccc">
+            </a-box>
+
+            <!-- Walls -->
+            <!-- Front Wall -->
+            <a-plane position="0 7.5 -4" width="6" height="15" rotation="0 0 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Back Wall -->
+            <a-plane position="0 7.5 4" width="6" height="15" rotation="0 180 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Left Wall -->
+            <a-plane position="-3 7.5 0" width="8" height="15" rotation="0 90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Right Wall -->
+            <a-plane position="3 7.5 0" width="8" height="15" rotation="0 -90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+        </a-entity>
+
+        <a-entity position="22 0.25 -17.5">
+            <!-- Floor -->
+            <a-box position="0 0 0" width="6" height="0.5" depth="8" color="#cccccc">
+            </a-box>
+
+            <!-- Ceiling -->
+            <a-box position="0 15 0" width="6" height="0.5" depth="8" color="#cccccc">
+            </a-box>
+
+            <!-- Walls -->
+            <!-- Front Wall -->
+            <a-plane position="0 7.5 -4" width="6" height="15" rotation="0 0 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Back Wall -->
+            <a-plane position="0 7.5 4" width="6" height="15" rotation="0 180 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Left Wall -->
+            <a-plane position="-3 7.5 0" width="8" height="15" rotation="0 90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Right Wall -->
+            <a-plane position="3 7.5 0" width="8" height="15" rotation="0 -90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+        </a-entity>
+
+        <!-- Circular Base for Model -->
+        <a-entity position="17 0 -13">
+            <!-- Circular Base -->
+            <a-cylinder position="0 0 0" radius="2" height="0.5" color="#808080">
+            </a-cylinder>
+
+            <!-- Model Placeholder -->
+            <!-- Replace with your 3D model -->
+            <a-entity gltf-model="./assets/seahorse_model.glb" scale="7 7 7" position="0 2.5 -0.25" rotation="0 180 0"
+                cast-shadow="true"></a-entity>
+
+            <a-entity position="0 6 0" rotation="0 -90 0">
+                <a-text value="Seahorse" color="#FFFFFF" align="center"
+                font="https://cdn.aframe.io/fonts/mozillavr.fnt"scale="4 4 4"></a-text>
+            </a-entity>
+        </a-entity>
+
+        <a-entity gltf-model="./assets/houseplant.glb" scale="0.01 0.01 0.01" position="-11 0 -1" rotation="0 180 0"
+                cast-shadow="true"></a-entity>
+
+        <a-assets>
+            <!-- กำมะหยี่ -->
+            <img id="velvet-texture" src="./assets/velvet-texture.jpg">
+        </a-assets>
+    </a-scene>
+</body>
+
+</html>
