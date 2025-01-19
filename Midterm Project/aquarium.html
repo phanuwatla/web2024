@@ -13,26 +13,29 @@
 <body>
     <a-scene>
         <!-- กล้องเดินได้ -->
-        <a-entity camera wasd-controls look-controls="pointerLockEnabled: true" touch-controls position="0 3 5"
+        <a-entity camera wasd-controls look-controls="pointerLockEnabled: true" position="0 4 5"
             dynamic-body></a-entity>
 
         <a-sky src="./images/ocean.jpg"></a-sky>
 
         <!-- พื้น -->
-        <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#01579b"
-            material="src: #velvet-texture; repeat: 4 4; shader: flat;" receive-shadow="true" static-body>
+        <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#002877"
+            material="src: #velvet-texture; repeat: 1000 1000; shader: flat;" receive-shadow="true" static-body>
         </a-plane>
 
         <!-- ผนัง -->
-        <a-box position="0 10 25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1" receive-shadow="true" static-body></a-box>
+        <a-box position="0 10 25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1" receive-shadow="true"
+            static-body></a-box>
         <a-box position="25 10 0" rotation="0 90 0" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1"
             receive-shadow="true" static-body></a-box>
         <a-box position="-25 10 0" rotation="0 90 0" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1"
             receive-shadow="true" static-body></a-box>
-        <a-box position="0 10 -25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1" receive-shadow="true" static-body></a-box>
+        <a-box position="0 10 -25" depth="0.1" width="50" height="20" color="#64c5d7" opacity="0.1"
+            receive-shadow="true" static-body></a-box>
 
         <!-- เพดาน -->
-        <a-box position="0 20 0" depth="50" width="50" height="0.1" color="#b3b1ad" receive-shadow="true" static-body></a-box>
+        <a-box position="0 20 0" depth="50" width="50" height="0.1" color="#b3b1ad" receive-shadow="true"
+            static-body></a-box>
 
         <!-- แสง -->
         <a-light type="ambient" color="#01a6ba" intensity="0.5" position="0 20 0"></a-light>
@@ -46,24 +49,54 @@
         <a-light type="point" color="#00cccc" intensity="0.8" position="-5 5 -5" cast-shadow="true"></a-light>
 
 
-        <a-box position="-10 1.5 -15" width="30" height="3" depth="20" color="#01579b"
-            material="src: #velvet-texture; repeat: 1 1; shader: flat;" static-body></a-box>
-        <a-box position="5.5 1.15 -15" width="1" height="2.3" depth="20" color="#01579b"
-            material="src: #velvet-texture; repeat: 1 1; shader: flat;" static-body></a-box>
-        <a-box position="6.5 0.8 -15" width="1" height="1.6" depth="20" color="#01579b"
-            material="src: #velvet-texture; repeat: 1 1; shader: flat;" static-body></a-box>
-        <a-box position="7.5 0.45 -15" width="1" height="0.9" depth="20" color="#01579b"
-            material="src: #velvet-texture; repeat: 1 1; shader: flat;" static-body></a-box>
-        <a-box position="8.5 0.1 -15" width="1" height="0.9" depth="20" color="#01579b"
-            material="src: #velvet-texture; repeat: 1 1; shader: flat;" static-body></a-box>
+        <a-box position="-10 1.5 -15" width="30" height="3" depth="20" color="#002877"
+            material="src: #velvet-texture; repeat: 500 100" static-body></a-box>
+        <a-box position="5.5 1.15 -15" width="1" height="2.3" depth="20" color="#002877"
+            material="src: #velvet-texture; repeat: 20 100" static-body></a-box>
+        <a-box position="6.5 0.8 -15" width="1" height="1.6" depth="20" color="#002877"
+            material="src: #velvet-texture; repeat: 20 100" static-body></a-box>
+        <a-box position="7.5 0.45 -15" width="1" height="0.9" depth="20" color="#002877"
+            material="src: #velvet-texture; repeat: 20 100" static-body></a-box>
+        <a-box position="8.5 0.1 -15" width="1" height="0.9" depth="20" color="#002877"
+            material="src: #velvet-texture; repeat: 20 100" static-body></a-box>
 
-        <a-entity gltf-model="./assets/human.glb" scale="0.5 0.5 0.5" position="0.2 0 0" cast-shadow="true"></a-entity>
-
-        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="3 1 0" cast-shadow="true"></a-entity>
-        <a-entity gltf-model="./assets/stairs.glb" scale="2 2.1 2" position="-8 0 -9.5" cast-shadow="true"></a-entity>
-        <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="-3 1 0" rotation="0 205 0"
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="4 3.5 -5.25" cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="1.8 3.5 -5.25"
             cast-shadow="true"></a-entity>
-        <a-entity gltf-model="./assets/whale.glb" scale="2 2 2" position="0 16 0" rotation="0 90 0"
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-0.4 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-2.6 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <!-- <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-4.8 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-7 3.5 -5.25" cast-shadow="true"></a-entity> -->
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-9.2 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-11.4 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-13.6 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-15.8 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-18 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-20.2 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/railing.glb" scale="1 1 1" position="-22.4 3.5 -5.25"
+            cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/human.glb" scale="0.5 0.5 0.5" position="1.2 0 0" cast-shadow="true"></a-entity>
+
+        <a-entity gltf-model="./assets/bench.glb" scale="0.6 0.6 0.6" position="5 0.75 -1" rotation="0 180 0"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/stairs.glb" scale="2 2.1 2" position="-6.25 0 -9.5"
+            cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="-1.5 1 -2" rotation="0 205 0"
+            cast-shadow="true"></a-entity>
+        <!-- <a-entity gltf-model="./assets/whale.glb" scale="2 2 2" position="0 16 0" rotation="0 90 0"
+            cast-shadow="true"></a-entity> -->
+
+        <a-entity gltf-model="./assets/whale.glb" scale="2.5 2.5 2.5" position="7 16 10" rotation="0 0 0"
             cast-shadow="true"></a-entity>
 
         <a-entity gltf-model="./assets/billboard.glb" scale="5 5 5" position="20 1 -1.5" rotation="0 150 0"
@@ -85,6 +118,7 @@
         <!-- Glass Room as a Single Entity -->
         <a-entity position="22 0.25 -8">
             <!-- Floor -->
+
             <a-box position="0 0 0" width="6" height="0.5" depth="8" color="#cccccc">
             </a-box>
 
@@ -112,6 +146,13 @@
             <a-plane position="3 7.5 0" width="8" height="15" rotation="0 -90 0" color="#64c5d7"
                 material="opacity: 0.3; transparent: true; side: double">
             </a-plane>
+
+            <!-- Water in the Glass Room -->
+            <a-box position="0 7 0" width="6" height="14" depth="8" color="#006994" opacity="0.6"></a-box>
+
+            <!-- Light inside the Glass Room -->
+            <a-light type="point" position="0 13 0" intensity="1.5" color="#ffffff" radius="5">
+            </a-light>
         </a-entity>
 
         <a-entity position="22 0.25 -17.5">
@@ -143,12 +184,15 @@
             <a-plane position="3 7.5 0" width="8" height="15" rotation="0 -90 0" color="#64c5d7"
                 material="opacity: 0.3; transparent: true; side: double">
             </a-plane>
+
+            <!-- Water in the Glass Room -->
+            <a-box position="0 7 0" width="6" height="14" depth="8" color="#006994" opacity="0.6"></a-box>
         </a-entity>
 
         <!-- Circular Base for Model -->
         <a-entity position="17 0 -13">
             <!-- Circular Base -->
-            <a-cylinder position="0 0 0" radius="2" height="0.5" color="#808080" receive-shadow="true">
+            <a-cylinder position="0 0 0" radius="2" height="0.5" color="#808080">
             </a-cylinder>
 
             <!-- Model Placeholder -->
@@ -157,17 +201,72 @@
                 cast-shadow="true"></a-entity>
 
             <a-entity position="0 6 0" rotation="0 -90 0">
-                <a-text value="Seahorse" color="#FFFFFF" align="center"
-                font="https://cdn.aframe.io/fonts/mozillavr.fnt"scale="4 4 4"></a-text>
+                <a-text value="Seahorse" color="#FFFFFF" align="center" font="https://cdn.aframe.io/fonts/mozillavr.fnt"
+                    scale="4 4 4"></a-text>
             </a-entity>
         </a-entity>
 
-        <a-entity gltf-model="./assets/houseplant.glb" scale="0.01 0.01 0.01" position="-11 0 -1" rotation="0 180 0"
-                cast-shadow="true"></a-entity>
+        <a-entity gltf-model="./assets/houseplant.glb" scale="0.01 0.01 0.01" position="11 0 -1" rotation="0 180 0"
+            cast-shadow="true"></a-entity>
+
+        <!-- Glass Room as a Single Entity -->
+        <a-entity position="-17.5 0.25 10">
+            <!-- Floor -->
+            <a-box position="0 0 0" width="15" height="0.5" depth="30" color="#cccccc">
+            </a-box>
+
+            <!-- Ceiling -->
+            <a-box position="0 15 0" width="15" height="0.5" depth="30" color="#cccccc">
+            </a-box>
+
+            <!-- Walls -->
+            <!-- Front Wall -->
+            <a-plane position="0 7.5 -15" width="15" height="15" rotation="0 0 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Back Wall -->
+            <a-plane position="0 7.5 15" width="15" height="15" rotation="0 180 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Left Wall -->
+            <a-plane position="-7.5 7.5 0" width="30" height="15" rotation="0 90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Right Wall -->
+            <a-plane position="7.5 7.5 0" width="30" height="15" rotation="0 -90 0" color="#64c5d7"
+                material="opacity: 0.3; transparent: true; side: double">
+            </a-plane>
+
+            <!-- Water in the Glass Room -->
+            <a-box position="0 7 0" width="15" height="14" depth="30" color="#006994" opacity="0.6"></a-box>
+        </a-entity>
+
+        <!-- <a-box position="-17.5 16 10" width="30" height="8" depth="15" color="#002877" rotation="0 90 0"
+            material="src: #velvet-texture; repeat: 500 100" static-body></a-box> -->
+
+        <a-entity position="7 0 10">
+            <!-- First Layer (Base) -->
+            <a-cylinder position="0 0 0" radius="6" height="0.5" color="#888888"></a-cylinder>
+
+            <!-- Second Layer -->
+            <a-cylinder position="0 0.5 0" radius="5" height="0.5" color="#aaaaaa"></a-cylinder>
+
+            <!-- Third Layer -->
+            <a-cylinder position="0 1 0" radius="4" height="0.5" color="#cccccc"></a-cylinder>
+
+            <!-- Fourth Layer -->
+            <a-cylinder position="0 1.5 0" radius="3" height="0.5" color="#eeeeee"></a-cylinder>
+
+            <!-- Fifth Layer -->
+            <a-cylinder position="0 2 0" radius="2" height="0.5" color="#ffffff"></a-cylinder>
+        </a-entity>
 
         <a-assets>
             <!-- กำมะหยี่ -->
-            <img id="velvet-texture" src="./assets/velvet-texture.jpg">
+            <img id="velvet-texture" src="./assets/carpet-texture.jpg">
         </a-assets>
     </a-scene>
 </body>
